@@ -9,37 +9,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   /* =========================================================
-     DESIGN TOKENS & THEMES
+     DESIGN TOKENS - FLUENT GLASS SYSTEM
      ========================================================= */
   :root {
-    /* Default Theme (Obsidian) - Soft Dark */
+    /* Default Theme (Obsidian) */
     --bg: #0f1115;
-    --bg-glow: #1a1d24;
-    --surface: #181b21;
-    --surface-hover: #1f232b;
+    --bg-glow-1: rgba(99, 102, 241, 0.15);  /* Ánh sáng accent */
+    --bg-glow-2: rgba(168, 85, 247, 0.10);  /* Ánh sáng phụ */
+    --glass-tint: 255, 255, 255;              /* Màu gốc của kính (đen/trắng) */
+    
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
     --accent: #6366f1;
     --accent-hover: #4f46e5;
-    --border: #2a2e37;
-    --shadow-color: rgba(0,0,0,0.4);
     
-    /* Status Colors */
     --red: #ef4444;
     --orange: #f97316;
     --yellow: #facc15;
     --green: #22c55e;
 
-    --radius-lg: 24px;
-    --radius-md: 16px;
+    --radius-lg: 22px;
+    --radius-md: 14px;
     --radius-sm: 8px;
   }
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     font-family: 'Inter', sans-serif;
@@ -55,28 +49,25 @@
   input, textarea { user-select: text; }
   h1, h2, h3 { font-family: 'Outfit', sans-serif; }
 
-  /* Animated Background Glow */
-  .bg-glow {
+  /* =========================================================
+     AMBIENT BACKGROUND (TĨNH - KHÔNG ANIMATE ĐỂ KHÔNG LAG)
+     ========================================================= */
+  .bg-ambient {
     position: fixed;
-    top: -20vh;
-    left: -10vw;
-    width: 120vw;
-    height: 120vh;
-    background: radial-gradient(circle at 50% 50%, var(--bg-glow) 0%, transparent 60%);
+    inset: 0;
     z-index: -1;
-    opacity: 0.8;
-    animation: pulseGlow 10s infinite alternate ease-in-out;
-    pointer-events: none;
+    background: 
+      radial-gradient(ellipse 60% 50% at 15% 10%, var(--bg-glow-1), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 85% 90%, var(--bg-glow-2), transparent 70%),
+      var(--bg);
     transition: background 0.4s ease;
-    will-change: transform, opacity;
-  }
-  @keyframes pulseGlow {
-    0% { transform: scale(1); opacity: 0.5; }
-    100% { transform: scale(1.1); opacity: 0.9; }
+    pointer-events: none;
+    /* Tách layer riêng, không ảnh hưởng layout */
+    will-change: background;
   }
 
   /* =========================================================
-     HEADER
+     HEADER (KÍNH MỜ THẬT - CHỈ 1 ELEMENT, KHÔNG LAG)
      ========================================================= */
   .header {
     position: sticky;
@@ -85,84 +76,76 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
-    background: rgba(15, 17, 21, 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    transition: all 0.3s ease;
+    padding: 16px 40px;
+    background: rgba(var(--glass-tint), 0.06);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(var(--glass-tint), 0.08);
+    transition: background 0.4s ease, border-color 0.4s ease;
   }
 
   .brand {
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
-    letter-spacing: -0.02em;
   }
 
   .brand-mark {
     width: 36px;
     height: 36px;
-    background: var(--accent);
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
     color: #fff;
     border-radius: 10px;
     display: grid;
     place-items: center;
-    font-size: 20px;
-    box-shadow: 0 4px 12px var(--shadow-color);
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
   }
 
   .btn-theme-trigger {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: rgba(var(--glass-tint), 0.06);
+    border: 1px solid rgba(var(--glass-tint), 0.12);
     color: var(--text-main);
-    padding: 10px 20px;
+    padding: 8px 16px;
     border-radius: 99px;
-    font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px var(--shadow-color);
+    transition: background 0.2s ease, border-color 0.2s ease;
+    box-shadow: inset 0 1px 0 rgba(var(--glass-tint), 0.08);
   }
 
   .btn-theme-trigger:hover {
-    background: var(--surface-hover);
-    border-color: var(--text-muted);
-    transform: translateY(-1px);
-  }
-  
-  .btn-theme-trigger:active {
-    transform: translateY(0);
+    background: rgba(var(--glass-tint), 0.1);
+    border-color: rgba(var(--glass-tint), 0.2);
   }
 
   /* =========================================================
-     HERO SECTION
+     HERO
      ========================================================= */
   .hero {
-    padding: 80px 40px 40px;
+    padding: 60px 40px 30px;
     max-width: 1400px;
     margin: 0 auto;
     text-align: center;
   }
 
   .hero h1 {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    margin-bottom: 20px;
-    background: linear-gradient(135deg, var(--text-main) 30%, var(--text-muted));
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.15;
+    margin-bottom: 16px;
+    background: linear-gradient(180deg, #fff, var(--text-muted));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .hero p {
-    font-size: 16px;
+    font-size: 15px;
     color: var(--text-muted);
     max-width: 600px;
     margin: 0 auto;
@@ -170,52 +153,90 @@
   }
 
   /* =========================================================
-     APP GRID
+     APP GRID & CARD (FAKE GLASS - KHÔNG DÙNG BACKDROP-FILTER)
      ========================================================= */
   .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 40px;
+    padding: 20px 40px 60px;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
   }
 
-  /* =========================================================
-     APP CARD
-     ========================================================= */
   .card {
-    background-color: var(--surface);
+    position: relative;
     border-radius: var(--radius-lg);
-    padding: 28px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    border: 1px solid var(--border);
-    box-shadow: 0 8px 24px -8px var(--shadow-color), 0 2px 8px -2px var(--shadow-color);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-                box-shadow 0.4s ease, 
-                border-color 0.4s ease,
-                background-color 0.4s ease;
-    animation: cardEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    gap: 16px;
+    
+    /* Fake Glass: Gradient trong suốt + highlight */
+    background: linear-gradient(145deg, 
+      rgba(var(--glass-tint), 0.07) 0%, 
+      rgba(var(--glass-tint), 0.02) 50%,
+      rgba(var(--glass-tint), 0.04) 100%);
+    border: 1px solid rgba(var(--glass-tint), 0.08);
+    box-shadow: 
+      inset 0 1px 0 rgba(var(--glass-tint), 0.08),   /* Top glare */
+      inset 0 -1px 0 rgba(0, 0, 0, 0.05),             /* Bottom shade */
+      0 8px 24px rgba(0, 0, 0, 0.25);                 /* Drop shadow */
+    
+    /* Tối ưu: Tạo layer GPU riêng, transition nhẹ */
+    transform: translateZ(0);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.4s ease,
+                border-color 0.3s ease;
+    animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     opacity: 0;
-    transform: translateY(20px);
     will-change: transform, opacity;
   }
 
   @keyframes cardEnter {
-    to { opacity: 1; transform: translateY(0); }
+    to { opacity: 1; transform: translateZ(0) translateY(0); }
+  }
+
+  /* Top glare line - Đặc trưng Fluent Design */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(var(--glass-tint), 0.3), 
+      transparent);
+    pointer-events: none;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  /* Accent ring khi hover - Chỉ transition opacity (GPU) */
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    border: 1px solid var(--accent);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
   }
 
   .card:hover {
-    transform: translateY(-6px);
-    border-color: var(--accent);
-    box-shadow: 0 16px 32px -8px var(--shadow-color), 0 0 0 1px var(--accent);
-    background-color: var(--surface-hover);
+    transform: translateZ(0) translateY(-4px);
+    background: linear-gradient(145deg, 
+      rgba(var(--glass-tint), 0.1) 0%, 
+      rgba(var(--glass-tint), 0.03) 50%,
+      rgba(var(--glass-tint), 0.06) 100%);
   }
+
+  .card:hover::after { opacity: 1; }
 
   .card-header {
     display: flex;
@@ -224,34 +245,38 @@
   }
 
   /* =========================================================
-     RAINBOW LOGO EFFECT (GPU Accelerated)
+     RAINBOW LOGO (GPU ACCELERATED + GLOW)
      ========================================================= */
   .icon-box-wrapper {
     position: relative;
-    width: 72px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
     border-radius: var(--radius-md);
     padding: 2px;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 12px var(--shadow-color);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* Tối ưu GPU */
+    transform: translateZ(0);
+    /* Glow cầu vồng tĩnh (fake bằng shadow, không animate) */
+    box-shadow: 
+      0 0 12px rgba(255, 92, 138, 0.25),
+      0 0 24px rgba(92, 158, 255, 0.15);
   }
 
-  .card:hover .icon-box-wrapper {
-    transform: scale(1.05);
-  }
-
+  /* Viền cầu vồng xoay chậm rãi */
   .icon-box-wrapper::before {
     content: '';
     position: absolute;
-    width: 150%;
-    height: 150%;
-    background: conic-gradient(from 0deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff, #ff0000);
-    animation: rotateRainbow 3s linear infinite;
+    width: 160%;
+    height: 160%;
+    background: conic-gradient(from 0deg, 
+      #ff5c8a, #ff9e5c, #ffe45c, #5cff8a, #5c9eff, #a85cff, #ff5c8a);
+    animation: rotateRainbow 5s linear infinite;
     will-change: transform;
+    transform: translateZ(0);
   }
 
   .icon-box-wrapper::after {
@@ -271,9 +296,9 @@
     border-radius: calc(var(--radius-md) - 2px);
     display: grid;
     place-items: center;
-    background: var(--surface);
+    background: var(--bg);
     overflow: hidden;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--text-muted);
   }
@@ -287,14 +312,12 @@
   }
 
   @keyframes rotateRainbow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    to { transform: rotate(360deg) translateZ(0); }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .icon-box-wrapper::before {
-      animation: none;
-    }
+    .icon-box-wrapper::before { animation: none; }
+    .card { animation: none; opacity: 1; }
   }
 
   /* =========================================================
@@ -305,28 +328,28 @@
     font-weight: 700;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
+    gap: 4px;
+    padding: 5px 10px;
     border-radius: var(--radius-sm);
-    background: rgba(34, 197, 94, 0.1);
+    background: rgba(34, 197, 94, 0.12);
     color: var(--green);
-    border: 1px solid rgba(34, 197, 94, 0.2);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
   }
 
   .card h2 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
     letter-spacing: -0.01em;
-    margin-top: 4px;
   }
 
   .card-desc {
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 13.5px;
+    line-height: 1.5;
     color: var(--text-muted);
     flex-grow: 1;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -334,16 +357,16 @@
   .meta-row {
     display: flex;
     gap: 8px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--text-muted);
   }
 
   .meta-badge {
-    background: var(--bg);
+    background: rgba(var(--glass-tint), 0.05);
     padding: 4px 10px;
     border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
+    border: 1px solid rgba(var(--glass-tint), 0.08);
   }
 
   /* =========================================================
@@ -352,17 +375,18 @@
   .stats-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    background: var(--bg);
-    padding: 16px;
+    gap: 12px;
+    background: rgba(var(--glass-tint), 0.03);
+    padding: 12px;
     border-radius: var(--radius-md);
-    border: 1px solid var(--border);
+    border: 1px solid rgba(var(--glass-tint), 0.06);
+    box-shadow: inset 0 1px 0 rgba(var(--glass-tint), 0.04);
   }
 
   .stat-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
 
   .stat-header {
@@ -375,23 +399,21 @@
     font-size: 11px;
     font-weight: 700;
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
   }
 
   .stat-val {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
   }
 
   .stat-track {
-    height: 6px;
-    background-color: var(--surface);
+    height: 4px;
+    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 99px;
     width: 100%;
     position: relative;
     overflow: hidden;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
   }
 
   .stat-fill {
@@ -400,49 +422,52 @@
     top: 0;
     left: 0;
     border-radius: 99px;
-    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: width;
+    box-shadow: 0 0 8px currentColor;
   }
 
   /* =========================================================
-     DOWNLOAD BUTTON
+     DOWNLOAD BUTTON (GLASS BUTTON)
      ========================================================= */
   .btn-download {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
-    padding: 16px;
-    background: linear-gradient(180deg, var(--accent), var(--accent-hover));
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
     color: #ffffff;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     border-radius: var(--radius-md);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     cursor: pointer;
-    box-shadow: 0 4px 12px var(--shadow-color);
-    transition: all 0.2s ease;
+    box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: transform 0.2s ease, filter 0.2s ease;
   }
 
   .btn-download:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px var(--shadow-color);
+    transform: translateY(-1px);
     filter: brightness(1.1);
   }
 
   .btn-download:active {
     transform: translateY(0);
+    filter: brightness(0.95);
   }
 
   /* =========================================================
-     THEME MODAL & TOAST
+     THEME MODAL (KÍNH MỜ THẬT - CHỈ KHI MỞ)
      ========================================================= */
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 1000;
@@ -451,8 +476,8 @@
     align-items: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
-    padding: 20px; /* Safe area */
+    transition: opacity 0.25s ease;
+    padding: 20px;
   }
 
   .modal-overlay.active {
@@ -461,149 +486,144 @@
   }
 
   .modal-content {
-    background-color: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
     width: 100%;
-    max-width: 500px;
-    padding: 32px;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
-    transform: scale(0.95) translateY(10px);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 480px;
+    padding: 28px;
+    border-radius: var(--radius-lg);
     position: relative;
     
-    /* CẬP NHẬT: Tự động thu nhỏ, cuộn nếu màn hình thấp, ẩn thanh cuộn */
+    /* Kính mờ thật cho modal */
+    background: linear-gradient(145deg, 
+      rgba(var(--glass-tint), 0.12) 0%, 
+      rgba(var(--glass-tint), 0.06) 100%);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    border: 1px solid rgba(var(--glass-tint), 0.15);
+    box-shadow: 
+      inset 0 1px 0 rgba(var(--glass-tint), 0.15),
+      0 24px 64px rgba(0, 0, 0, 0.5);
+    
+    transform: scale(0.95);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     max-height: 90vh;
     overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none;
   }
-  
-  .modal-content::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
-  }
+
+  .modal-content::-webkit-scrollbar { display: none; }
 
   .modal-overlay.active .modal-content {
-    transform: scale(1) translateY(0);
+    transform: scale(1);
   }
 
-  /* Nút X đóng Modal */
   .modal-close {
     position: absolute;
-    top: 24px;
-    right: 24px;
-    background: transparent;
-    border: none;
+    top: 20px;
+    right: 20px;
+    background: rgba(var(--glass-tint), 0.06);
+    border: 1px solid rgba(var(--glass-tint), 0.1);
     color: var(--text-muted);
     cursor: pointer;
-    padding: 8px;
+    padding: 6px;
     border-radius: 50%;
     display: grid;
     place-items: center;
-    transition: all 0.2s ease;
-    z-index: 10;
+    transition: color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    width: 32px;
+    height: 32px;
   }
 
   .modal-close:hover {
-    background: var(--surface-hover);
     color: var(--text-main);
     transform: rotate(90deg);
+    background: rgba(var(--glass-tint), 0.1);
   }
 
   .modal-title {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
-    margin-bottom: 8px;
-    padding-right: 30px; /* Tránh đè lên nút X */
+    margin-bottom: 6px;
   }
 
   .modal-sub {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-muted);
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .theme-grid {
     display: grid;
-    /* CẬP NHẬT: Tự động tính toán số cột dựa trên không gian có sẵn (Auto-fit) */
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 10px;
   }
 
   .theme-item {
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 16px 8px;
+    padding: 12px 6px;
+    border-radius: var(--radius-sm);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    background: var(--bg);
+    background: rgba(var(--glass-tint), 0.04);
+    border: 1px solid rgba(var(--glass-tint), 0.08);
+    transition: border-color 0.2s ease, background 0.2s ease;
   }
 
-  .theme-item:hover {
-    border-color: var(--text-muted);
-    transform: translateY(-2px);
+  .theme-item:hover { 
+    border-color: rgba(var(--glass-tint), 0.2); 
+    background: rgba(var(--glass-tint), 0.08);
   }
-
-  .theme-item.active {
-    border-color: var(--accent);
-    background: var(--surface-hover);
+  
+  .theme-item.active { 
+    border-color: var(--accent); 
+    background: rgba(var(--glass-tint), 0.1);
     box-shadow: 0 0 0 1px var(--accent);
   }
 
   .color-swatch {
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3), 0 2px 6px rgba(0,0,0,0.2);
   }
 
   .theme-name {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: var(--text-muted);
-    text-align: center;
-    white-space: nowrap;
   }
 
-  .theme-item.active .theme-name {
-    color: var(--text-main);
-  }
+  .theme-item.active .theme-name { color: var(--text-main); }
 
-  /* Toast Notification */
+  /* Toast */
   .toast {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: var(--surface);
-    color: var(--text-main);
-    padding: 16px 24px;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--accent);
-    box-shadow: 0 12px 32px var(--shadow-color);
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 20px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 14px;
+    gap: 10px;
+    font-size: 13px;
     font-weight: 500;
     z-index: 2000;
-    transform: translateY(100px);
+    transform: translateY(50px);
     opacity: 0;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
     pointer-events: none;
+    
+    background: rgba(var(--glass-tint), 0.1);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--accent);
+    color: var(--text-main);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
 
-  .toast.show {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  .toast svg {
-    color: var(--green);
-  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast svg { color: var(--green); }
 
   /* =========================================================
      ANTI-INSPECT WARNING
@@ -620,44 +640,42 @@
     text-align: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.15s ease;
   }
 
-  .warn-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
+  .warn-overlay.show { opacity: 1; pointer-events: auto; }
 
   .warn-title {
-    font-size: 48px;
+    font-size: 40px;
     color: var(--red);
-    margin-bottom: 16px;
-    font-family: 'Outfit', sans-serif;
+    margin-bottom: 12px;
   }
 
   .warn-desc {
-    font-size: 18px;
+    font-size: 16px;
     color: var(--text-main);
     max-width: 400px;
-    line-height: 1.6;
+    line-height: 1.5;
   }
 
   @media (max-width: 768px) {
-    .header { padding: 16px 20px; }
-    .hero { padding: 60px 20px 30px; }
+    .header { padding: 12px 20px; }
+    .hero { padding: 40px 20px 20px; }
     .container { padding: 20px; }
     .grid { grid-template-columns: 1fr; gap: 16px; }
     .card { padding: 20px; }
-    .modal-content { padding: 24px; max-height: 85vh; }
-    .modal-close { top: 16px; right: 16px; }
+    .modal-content { padding: 20px; margin: 10px; }
     .brand span { display: none; }
-    .toast { bottom: 20px; right: 20px; left: 20px; justify-content: center; }
+    .toast { bottom: 16px; right: 16px; left: 16px; justify-content: center; }
+    /* Giảm blur trên mobile để đỡ lag */
+    .header { backdrop-filter: blur(12px) saturate(150%); -webkit-backdrop-filter: blur(12px) saturate(150%); }
+    .modal-content { backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); }
   }
 </style>
 </head>
 <body>
 
-<div class="bg-glow"></div>
+<div class="bg-ambient"></div>
 
 <script>
   const CONFIG_APPS = [
@@ -699,7 +717,7 @@
 
 <main>
   <section class="hero">
-    <h1>Những Executor chất lượng. An toàn, Không virus, cập nhật liên tục!</h1>
+    <h1>Những Executor chất lượng. An toàn, Không virus!</h1>
     <p>Web tải executor an toàn, nhanh chóng, hiệu quả. Không virus! iOS and Windows, Mac OS soon!</p>
   </section>
 
@@ -712,21 +730,21 @@
 <div class="modal-overlay" id="themeModal">
   <div class="modal-content">
     <button class="modal-close" id="closeTheme" aria-label="Đóng">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
     <h2 class="modal-title">Chọn Giao Diện</h2>
-    <p class="modal-sub">12 màu sắc được tinh chỉnh để mang lại trải nghiệm tốt nhất.</p>
+    <p class="modal-sub">Trải nghiệm Fluent Glass. Tự động lưu lựa chọn.</p>
     <div class="theme-grid" id="themeGrid"></div>
   </div>
 </div>
 
-<!-- TOAST THÔNG BÁO -->
+<!-- TOAST -->
 <div class="toast" id="toast">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
   <span id="toastMsg">Đã lưu giao diện!</span>
 </div>
 
-<!-- WARNING OVERLAY -->
+<!-- WARNING -->
 <div class="warn-overlay" id="warn">
   <h2 class="warn-title">Truy cập bị chặn!</h2>
   <p class="warn-desc">Hành vi can thiệp vào mã nguồn hoặc sử dụng DevTools đã bị vô hiệu hóa vì lý do bảo mật.</p>
@@ -737,7 +755,7 @@
   "use strict";
 
   /* =========================================================
-     1. ANTI-INSPECT (CHẶN VÀ TỰ ĐỘNG MỞ LẠI)
+     1. ANTI-INSPECT
      ========================================================= */
   const warnEl = document.getElementById('warn');
   let warnTimeout;
@@ -745,9 +763,7 @@
   function triggerWarning() {
     warnEl.classList.add('show');
     clearTimeout(warnTimeout);
-    warnTimeout = setTimeout(() => {
-      warnEl.classList.remove('show');
-    }, 2500);
+    warnTimeout = setTimeout(() => warnEl.classList.remove('show'), 2000);
   }
 
   document.addEventListener('contextmenu', (e) => { e.preventDefault(); triggerWarning(); });
@@ -757,7 +773,6 @@
     const isDevtoolsKey = e.key === 'F12' || 
       (e.ctrlKey && e.shiftKey && ['i','j','c','k'].indexOf(k) > -1) || 
       (e.ctrlKey && ['u','s'].indexOf(k) > -1);
-    
     if (isDevtoolsKey) {
       e.preventDefault(); 
       e.stopPropagation(); 
@@ -778,21 +793,23 @@
   }, 1000);
 
   /* =========================================================
-     2. QUẢN LÝ THEME (CÓ LƯU VÀ TOAST)
+     2. THEMES (Fluent Glass Palette)
      ========================================================= */
   const THEMES = [
-    { id: 'obsidian', name: 'Obsidian', bg: '#0f1115', glow: '#1a1d24', surface: '#181b21', hover: '#1f232b', text: '#f8fafc', muted: '#94a3b8', accent: '#6366f1', accentHover: '#4f46e5', border: '#2a2e37' },
-    { id: 'emerald', name: 'Emerald', bg: '#022c22', glow: '#064e3b', surface: '#064e3b', hover: '#065f46', text: '#ecfdf5', muted: '#a7f3d0', accent: '#10b981', accentHover: '#059669', border: '#047857' },
-    { id: 'cyberpunk', name: 'Cyberpunk', bg: '#083344', glow: '#164e63', surface: '#164e63', hover: '#155e75', text: '#ecfeff', muted: '#a5f3fc', accent: '#06b6d4', accentHover: '#0891b2', border: '#0891b2' },
-    { id: 'amethyst', name: 'Amethyst', bg: '#1a0f3d', glow: '#2e1065', surface: '#2e1065', hover: '#4c1d95', text: '#f3e8ff', muted: '#d8b4fe', accent: '#a855f7', accentHover: '#9333ea', border: '#6b21a8' },
-    { id: 'sunset', name: 'Sunset', bg: '#431407', glow: '#7c2d12', surface: '#7c2d12', hover: '#9a3412', text: '#fff7ed', muted: '#fdba74', accent: '#f97316', accentHover: '#ea580c', border: '#c2410c' },
-    { id: 'ocean', name: 'Ocean', bg: '#172554', glow: '#1e3a8a', surface: '#1e3a8a', hover: '#1e40af', text: '#eff6ff', muted: '#93c5fd', accent: '#3b82f6', accentHover: '#2563eb', border: '#2563eb' },
-    { id: 'crimson', name: 'Crimson', bg: '#450a0a', glow: '#7f1d1d', surface: '#7f1d1d', hover: '#991b1b', text: '#fef2f2', muted: '#fca5a5', accent: '#ef4444', accentHover: '#dc2626', border: '#b91c1c' },
-    { id: 'gold', name: 'Gold', bg: '#1c1917', glow: '#292524', surface: '#292524', hover: '#44403c', text: '#fafaf9', muted: '#d6d3d1', accent: '#eab308', accentHover: '#ca8a04', border: '#57534e' },
-    { id: 'vaporwave', name: 'Vaporwave', bg: '#500724', glow: '#701a75', surface: '#701a75', hover: '#86198f', text: '#fdf4ff', muted: '#f0abfc', accent: '#ec4899', accentHover: '#db2777', border: '#a21caf' },
-    { id: 'matrix', name: 'Matrix', bg: '#052e16', glow: '#14532d', surface: '#14532d', hover: '#166534', text: '#f0fdf4', muted: '#86efac', accent: '#22c55e', accentHover: '#16a34a', border: '#15803d' },
-    { id: 'aurora', name: 'Aurora', bg: '#042f2e', glow: '#115e59', surface: '#115e59', hover: '#0f766e', text: '#f0fdfa', muted: '#99f6e4', accent: '#14b8a6', accentHover: '#0d9488', border: '#0d9488' },
-    { id: 'sakura', name: 'Sakura', bg: '#fdf2f8', glow: '#fce7f3', surface: '#ffffff', hover: '#fce7f3', text: '#500724', muted: '#9d174d', accent: '#f472b6', accentHover: '#db2777', border: '#fbcfe8' }
+    // Dark themes: glass-tint = 255 (kính sáng trên nền tối)
+    { id: 'obsidian', name: 'Obsidian', bg: '#0f1115', glow1: 'rgba(99, 102, 241, 0.15)', glow2: 'rgba(168, 85, 247, 0.10)', glassTint: '255, 255, 255', text: '#f8fafc', muted: '#94a3b8', accent: '#6366f1', accentHover: '#4f46e5' },
+    { id: 'emerald', name: 'Emerald', bg: '#041a16', glow1: 'rgba(16, 185, 129, 0.18)', glow2: 'rgba(6, 95, 70, 0.10)', glassTint: '255, 255, 255', text: '#ecfdf5', muted: '#a7f3d0', accent: '#10b981', accentHover: '#059669' },
+    { id: 'cyberpunk', name: 'Cyberpunk', bg: '#061a22', glow1: 'rgba(6, 182, 212, 0.20)', glow2: 'rgba(59, 130, 246, 0.12)', glassTint: '255, 255, 255', text: '#ecfeff', muted: '#a5f3fc', accent: '#06b6d4', accentHover: '#0891b2' },
+    { id: 'amethyst', name: 'Amethyst', bg: '#140a2e', glow1: 'rgba(168, 85, 247, 0.20)', glow2: 'rgba(124, 92, 255, 0.12)', glassTint: '255, 255, 255', text: '#f3e8ff', muted: '#d8b4fe', accent: '#a855f7', accentHover: '#9333ea' },
+    { id: 'sunset', name: 'Sunset', bg: '#2e0e05', glow1: 'rgba(249, 115, 22, 0.20)', glow2: 'rgba(239, 68, 68, 0.12)', glassTint: '255, 255, 255', text: '#fff7ed', muted: '#fdba74', accent: '#f97316', accentHover: '#ea580c' },
+    { id: 'ocean', name: 'Ocean', bg: '#0c1a3d', glow1: 'rgba(59, 130, 246, 0.20)', glow2: 'rgba(6, 182, 212, 0.12)', glassTint: '255, 255, 255', text: '#eff6ff', muted: '#93c5fd', accent: '#3b82f6', accentHover: '#2563eb' },
+    { id: 'crimson', name: 'Crimson', bg: '#2e0505', glow1: 'rgba(239, 68, 68, 0.20)', glow2: 'rgba(244, 63, 94, 0.12)', glassTint: '255, 255, 255', text: '#fef2f2', muted: '#fca5a5', accent: '#ef4444', accentHover: '#dc2626' },
+    { id: 'gold', name: 'Gold', bg: '#171412', glow1: 'rgba(234, 179, 8, 0.18)', glow2: 'rgba(245, 158, 11, 0.10)', glassTint: '255, 255, 255', text: '#fafaf9', muted: '#d6d3d1', accent: '#eab308', accentHover: '#ca8a04' },
+    { id: 'vaporwave', name: 'Vaporwave', bg: '#33041a', glow1: 'rgba(236, 72, 153, 0.20)', glow2: 'rgba(139, 92, 246, 0.12)', glassTint: '255, 255, 255', text: '#fdf4ff', muted: '#f0abfc', accent: '#ec4899', accentHover: '#db2777' },
+    { id: 'matrix', name: 'Matrix', bg: '#031a0c', glow1: 'rgba(34, 197, 94, 0.20)', glow2: 'rgba(22, 163, 74, 0.12)', glassTint: '255, 255, 255', text: '#f0fdf4', muted: '#86efac', accent: '#22c55e', accentHover: '#16a34a' },
+    { id: 'aurora', name: 'Aurora', bg: '#031e1d', glow1: 'rgba(20, 184, 166, 0.20)', glow2: 'rgba(45, 212, 191, 0.12)', glassTint: '255, 255, 255', text: '#f0fdfa', muted: '#99f6e4', accent: '#14b8a6', accentHover: '#0d9488' },
+    // Sakura: kính TỐI trên nền sáng (glassTint = 0)
+    { id: 'sakura', name: 'Sakura', bg: '#fdf2f8', glow1: 'rgba(244, 114, 182, 0.20)', glow2: 'rgba(219, 39, 119, 0.10)', glassTint: '0, 0, 0', text: '#500724', muted: '#9d174d', accent: '#f472b6', accentHover: '#db2777' }
   ];
 
   const themeGrid = document.getElementById('themeGrid');
@@ -801,7 +818,7 @@
   const toastMsg = document.getElementById('toastMsg');
   let toastTimeout;
   
-  let currentThemeId = localStorage.getItem('nova_theme_v3') || 'obsidian';
+  let currentThemeId = localStorage.getItem('nova_theme_v4') || 'obsidian';
 
   THEMES.forEach(t => {
     const el = document.createElement('div');
@@ -816,9 +833,7 @@
     toastMsg.textContent = message;
     toast.classList.add('show');
     clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => {
-      toast.classList.remove('show');
-    }, 3000);
+    toastTimeout = setTimeout(() => toast.classList.remove('show'), 2500);
   }
 
   function applyTheme(id) {
@@ -826,21 +841,19 @@
     const root = document.documentElement;
 
     root.style.setProperty('--bg', theme.bg);
-    root.style.setProperty('--bg-glow', theme.glow);
-    root.style.setProperty('--surface', theme.surface);
-    root.style.setProperty('--surface-hover', theme.hover);
+    root.style.setProperty('--bg-glow-1', theme.glow1);
+    root.style.setProperty('--bg-glow-2', theme.glow2);
+    root.style.setProperty('--glass-tint', theme.glassTint);
     root.style.setProperty('--text-main', theme.text);
     root.style.setProperty('--text-muted', theme.muted);
     root.style.setProperty('--accent', theme.accent);
     root.style.setProperty('--accent-hover', theme.accentHover);
-    root.style.setProperty('--border', theme.border);
-    root.style.setProperty('--shadow-color', id === 'sakura' ? 'rgba(157, 23, 77, 0.15)' : 'rgba(0,0,0,0.5)');
 
     document.querySelectorAll('.theme-item').forEach(el => el.classList.remove('active'));
     const activeEl = document.querySelector(`.theme-item[data-id="${id}"]`);
     if (activeEl) activeEl.classList.add('active');
 
-    localStorage.setItem('nova_theme_v3', id);
+    localStorage.setItem('nova_theme_v4', id);
     currentThemeId = id;
     
     themeModal.classList.remove('active');
@@ -851,28 +864,18 @@
     const theme = THEMES.find(t => t.id === currentThemeId) || THEMES[0];
     const root = document.documentElement;
     root.style.setProperty('--bg', theme.bg);
-    root.style.setProperty('--bg-glow', theme.glow);
-    root.style.setProperty('--surface', theme.surface);
-    root.style.setProperty('--surface-hover', theme.hover);
+    root.style.setProperty('--bg-glow-1', theme.glow1);
+    root.style.setProperty('--bg-glow-2', theme.glow2);
+    root.style.setProperty('--glass-tint', theme.glassTint);
     root.style.setProperty('--text-main', theme.text);
     root.style.setProperty('--text-muted', theme.muted);
     root.style.setProperty('--accent', theme.accent);
     root.style.setProperty('--accent-hover', theme.accentHover);
-    root.style.setProperty('--border', theme.border);
-    root.style.setProperty('--shadow-color', theme.id === 'sakura' ? 'rgba(157, 23, 77, 0.15)' : 'rgba(0,0,0,0.5)');
   })();
 
-  document.getElementById('openTheme').addEventListener('click', () => {
-    themeModal.classList.add('active');
-  });
-
-  document.getElementById('closeTheme').addEventListener('click', () => {
-    themeModal.classList.remove('active');
-  });
-
-  themeModal.addEventListener('click', (e) => {
-    if (e.target === themeModal) themeModal.classList.remove('active');
-  });
+  document.getElementById('openTheme').addEventListener('click', () => themeModal.classList.add('active'));
+  document.getElementById('closeTheme').addEventListener('click', () => themeModal.classList.remove('active'));
+  themeModal.addEventListener('click', (e) => { if (e.target === themeModal) themeModal.classList.remove('active'); });
 
   /* =========================================================
      3. RENDER APP
@@ -887,20 +890,12 @@
   }
 
   function render() {
-    grid.innerHTML = '';
+    let html = '';
 
     CONFIG_APPS.forEach((app, i) => {
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.style.animationDelay = `${i * 0.08}s`;
-
-      let iconHtml = '';
-      const fallback = app.icon || (app.ten_app || 'A').charAt(0).toUpperCase();
-      if (app.logo && app.logo.trim()) {
-        iconHtml = `<img src="${app.logo}" alt="${app.ten_app}" loading="lazy" draggable="false">`;
-      } else {
-        iconHtml = `<span>${fallback}</span>`;
-      }
+      let iconHtml = app.logo && app.logo.trim() 
+        ? `<img src="${app.logo}" alt="${app.ten_app}" loading="lazy" draggable="false">`
+        : `<span>${app.icon || (app.ten_app || 'A').charAt(0).toUpperCase()}</span>`;
 
       let uncNum = Math.min(Math.max(parseInt(String(app.unc).replace('%','')) || 0, 0), 100);
       let suncNum = Math.min(Math.max(parseInt(String(app.sunc).replace('%','')) || 0, 0), 100);
@@ -908,70 +903,64 @@
       const uncColor = getProgressColor(uncNum);
       const suncColor = getProgressColor(suncNum);
 
-      let safeTag = '';
-      if (app.an_toan && app.an_toan.trim()) {
-        safeTag = `
-          <div class="tag-safe">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            ${app.an_toan}
-          </div>
-        `;
-      }
-
-      card.innerHTML = `
-        <div class="card-header">
-          <!-- Áp dụng khung cầu vồng bao quanh logo -->
-          <div class="icon-box-wrapper">
-            <div class="icon-box">${iconHtml}</div>
-          </div>
-          ${safeTag}
+      let safeTag = app.an_toan && app.an_toan.trim() ? `
+        <div class="tag-safe">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          ${app.an_toan}
         </div>
-        <h2>${app.ten_app}</h2>
-        <p class="card-desc">${app.thong_tin || 'Chưa có thông tin mô tả.'}</p>
-        
-        <!-- Đã xoá dung lượng (size) ở đây -->
-        <div class="meta-row">
-          <span class="meta-badge">${app.tag || 'Unknown'}</span>
-        </div>
+      ` : '';
 
-        <div class="stats-container">
-          <div class="stat-group">
-            <div class="stat-header">
-              <span class="stat-label">UNC</span>
-              <span class="stat-val" style="color: ${uncColor}">${uncNum}%</span>
+      html += `
+        <article class="card" style="animation-delay: ${i * 0.06}s">
+          <div class="card-header">
+            <div class="icon-box-wrapper">
+              <div class="icon-box">${iconHtml}</div>
             </div>
-            <div class="stat-track">
-              <div class="stat-fill" style="width: 0%; background-color: ${uncColor};" data-width="${uncNum}%"></div>
+            ${safeTag}
+          </div>
+          <h2>${app.ten_app}</h2>
+          <p class="card-desc">${app.thong_tin || 'Chưa có thông tin mô tả.'}</p>
+          
+          <div class="meta-row">
+            <span class="meta-badge">${app.tag || 'Unknown'}</span>
+          </div>
+
+          <div class="stats-container">
+            <div class="stat-group">
+              <div class="stat-header">
+                <span class="stat-label">UNC</span>
+                <span class="stat-val" style="color: ${uncColor}">${uncNum}%</span>
+              </div>
+              <div class="stat-track">
+                <div class="stat-fill" style="width: 0%; background-color: ${uncColor}; color: ${uncColor};" data-width="${uncNum}%"></div>
+              </div>
+            </div>
+            <div class="stat-group">
+              <div class="stat-header">
+                <span class="stat-label">SUNC</span>
+                <span class="stat-val" style="color: ${suncColor}">${suncNum}%</span>
+              </div>
+              <div class="stat-track">
+                <div class="stat-fill" style="width: 0%; background-color: ${suncColor}; color: ${suncColor};" data-width="${suncNum}%"></div>
+              </div>
             </div>
           </div>
-          <div class="stat-group">
-            <div class="stat-header">
-              <span class="stat-label">SUNC</span>
-              <span class="stat-val" style="color: ${suncColor}">${suncNum}%</span>
-            </div>
-            <div class="stat-track">
-              <div class="stat-fill" style="width: 0%; background-color: ${suncColor};" data-width="${suncNum}%"></div>
-            </div>
-          </div>
-        </div>
 
-        <a href="${app.link || '#'}" target="_blank" rel="noopener noreferrer" class="btn-download">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Tải xuống
-        </a>
+          <a href="${app.link || '#'}" target="_blank" rel="noopener noreferrer" class="btn-download">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Tải xuống
+          </a>
+        </article>
       `;
-      
-      grid.appendChild(card);
     });
 
-    // Kích hoạt chạy thanh Progress Bar mượt mà
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        document.querySelectorAll('.stat-fill').forEach(bar => {
-          bar.style.width = bar.getAttribute('data-width');
-        });
-      }, 300);
-    });
+    grid.innerHTML = html;
+
+    setTimeout(() => {
+      document.querySelectorAll('.stat-fill').forEach(bar => {
+        bar.style.width = bar.getAttribute('data-width');
+      });
+    }, 150);
   }
 
   render();
