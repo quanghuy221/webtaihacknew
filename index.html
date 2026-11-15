@@ -231,7 +231,7 @@
     width: 72px;
     height: 72px;
     border-radius: var(--radius-md);
-    padding: 2px; /* Độ dày của viền cầu vồng */
+    padding: 2px;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -244,7 +244,6 @@
     transform: scale(1.05);
   }
 
-  /* Tạo dải màu cầu vồng xoay */
   .icon-box-wrapper::before {
     content: '';
     position: absolute;
@@ -255,11 +254,10 @@
     will-change: transform;
   }
 
-  /* Che phần giữa để tạo viền */
   .icon-box-wrapper::after {
     content: '';
     position: absolute;
-    inset: 2px; /* Khớp với padding ở trên */
+    inset: 2px;
     background: var(--bg);
     border-radius: calc(var(--radius-md) - 2px);
     z-index: 1;
@@ -293,7 +291,6 @@
     100% { transform: rotate(360deg); }
   }
 
-  /* Tôn trọng cài đặt giảm chuyển động của người dùng (Accessibility) */
   @media (prefers-reduced-motion: reduce) {
     .icon-box-wrapper::before {
       animation: none;
@@ -455,6 +452,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
+    padding: 20px; /* Safe area */
   }
 
   .modal-overlay.active {
@@ -473,6 +471,16 @@
     transform: scale(0.95) translateY(10px);
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
+    
+    /* CẬP NHẬT: Tự động thu nhỏ, cuộn nếu màn hình thấp, ẩn thanh cuộn */
+    max-height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  
+  .modal-content::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
   }
 
   .modal-overlay.active .modal-content {
@@ -493,6 +501,7 @@
     display: grid;
     place-items: center;
     transition: all 0.2s ease;
+    z-index: 10;
   }
 
   .modal-close:hover {
@@ -505,6 +514,7 @@
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 8px;
+    padding-right: 30px; /* Tránh đè lên nút X */
   }
 
   .modal-sub {
@@ -515,7 +525,8 @@
 
   .theme-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* CẬP NHẬT: Tự động tính toán số cột dựa trên không gian có sẵn (Auto-fit) */
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 12px;
   }
 
@@ -554,6 +565,8 @@
     font-size: 12px;
     font-weight: 600;
     color: var(--text-muted);
+    text-align: center;
+    white-space: nowrap;
   }
 
   .theme-item.active .theme-name {
@@ -635,8 +648,7 @@
     .container { padding: 20px; }
     .grid { grid-template-columns: 1fr; gap: 16px; }
     .card { padding: 20px; }
-    .theme-grid { grid-template-columns: repeat(2, 1fr); }
-    .modal-content { margin: 20px; padding: 24px; }
+    .modal-content { padding: 24px; max-height: 85vh; }
     .modal-close { top: 16px; right: 16px; }
     .brand span { display: none; }
     .toast { bottom: 20px; right: 20px; left: 20px; justify-content: center; }
